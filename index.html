@@ -18,7 +18,7 @@ h1{font-size:clamp(34px,7vw,52px);line-height:1.05;margin:0 0 8px;font-weight:70
 .lede{color:var(--muted);max-width:60ch;margin:0 0 24px}
 .bar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:8px}
 input,select,textarea,button{font:inherit;color:var(--ink)}
-input[type=search],select,textarea{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 12px;min-height:44px}
+input[type=search],input[type=text],select,textarea{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 12px;min-height:44px}
 input[type=search]{flex:1 1 220px}
 textarea{width:100%;min-height:84px;resize:vertical}
 :focus-visible{outline:3px solid var(--ko);outline-offset:2px}
@@ -57,6 +57,9 @@ label{display:block;font-size:14px;color:var(--muted);margin-bottom:4px}
 button.star{border:0;padding:4px 6px;font-size:28px;color:var(--mix);min-width:40px;line-height:1}
 .klvl{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:10px 0 0;font-size:14px;color:var(--muted)}.kseg{display:flex;gap:4px;flex-wrap:wrap}
 .kseg span{font-size:12px;padding:3px 8px;border-radius:6px;background:var(--bg);color:var(--muted);border:1px solid var(--line)}.kseg span.on{background:var(--ko-bg);color:var(--ko);border-color:var(--ko);font-weight:500}
+.cb{position:relative}.cb input{width:100%}#f-course-list{position:absolute;z-index:5;left:0;right:0;top:100%;margin:4px 0 0;padding:4px;list-style:none;max-height:260px;overflow:auto;background:var(--surface);border:1px solid var(--line);border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.18)}#f-course-list li{padding:8px 10px;border-radius:6px;cursor:pointer;font-size:15px;line-height:1.3}#f-course-list li small{display:block;color:var(--muted);font-size:13px}#f-course-list li[aria-selected=true]{background:var(--ko-bg);color:var(--ko)}#f-course-list li[aria-selected=true] small{color:var(--ko)}#f-course-list li.hint{cursor:default;color:var(--muted);font-size:14px}
+.pager{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin:20px 0 0}.pager button{min-width:44px}.pager button[aria-current=page]{background:var(--btn);color:var(--btn-ink);border-color:var(--btn)}
+.sw{display:inline-flex;cursor:pointer;touch-action:manipulation;user-select:none;border-radius:8px}.sg{width:38px;text-align:center;font-size:32px;line-height:1.2;color:var(--mix)}.hs{position:relative;display:inline-block}.hs i{position:absolute;left:0;top:0;width:50%;overflow:hidden;font-style:normal}.hrow span{width:34px}
 @media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
 </style>
 </head>
@@ -70,23 +73,24 @@ button.star{border:0;padding:4px 6px;font-size:28px;color:var(--mix);min-width:4
 <input type="search" id="q" placeholder="Search a course or professor, in English or Korean" aria-label="Search courses or professors">
 <select id="lf" aria-label="Filter by official label"><option value="">All official labels</option><option>100% English</option><option>English and Korean</option><option>Korean</option></select>
 <select id="sf" aria-label="Sort courses"><option value="">Original order</option><option value="rating">Highest rated</option><option value="reviews">Most reviewed</option></select>
-<select id="kf" aria-label="Filter by Korean level"><option value="">Any Korean level</option><option value="0">No Korean needed</option><option value="1">Basic or lower</option><option value="2">Intermediate or lower</option></select>
+<select id="kf" aria-label="Filter by Korean level"><option value="">Any Korean level</option><option value="0">No Korean needed</option><option value="1">Basic or lower</option><option value="2">Intermediate or lower</option></select><button class="pri" id="jump">Write a review</button>
 </div>
 <p class="count" id="count" aria-live="polite"></p>
 <div class="grid" id="grid"><p class="meta">Loading courses…</p></div>
+<nav class="pager" id="pager" aria-label="Course pages"></nav>
 
 <section class="form" id="formsec">
 <h2>Rate a course and write your review</h2>
 <p class="meta" style="margin:0">Give a star rating, say what language each part was in, and tell the next student what to expect. Keep it about the class itself (format, language, workload) and stay respectful.</p>
 <div class="fg">
-<div><label for="f-course">Course</label><select id="f-course"></select></div>
+<div><label for="f-course-q">Course</label><div class="cb"><input type="text" id="f-course-q" role="combobox" aria-expanded="false" aria-controls="f-course-list" aria-autocomplete="list" autocomplete="off" placeholder="Search by course or professor"><ul id="f-course-list" role="listbox" hidden></ul></div></div>
 <div><label for="f-sem">Semester taken</label><select id="f-sem"><option value="">Choose</option><option>2026 Fall</option><option>2026 Spring</option><option>2025 Fall</option><option>2025 Spring</option></select></div>
 <div><label for="f-lec">Lectures</label><select id="f-lec"></select></div>
 <div><label for="f-slides">Slides</label><select id="f-slides"></select></div>
 <div><label for="f-exam">Exams</label><select id="f-exam"></select></div>
 <div><label for="f-team">Teamwork and group chat</label><select id="f-team"></select></div>
 <div><label for="f-kl">Korean level you would recommend</label><select id="f-kl"></select></div>
-<div><label id="f-star-l">Your rating</label><div id="f-stars" role="radiogroup" aria-labelledby="f-star-l"></div></div>
+<div><label id="f-star-l">Your rating</label><div id="f-stars" class="sw" role="slider" tabindex="0" aria-labelledby="f-star-l" aria-valuemin="0.5" aria-valuemax="5" aria-valuenow="0" aria-valuetext="No rating yet"></div><div class="meta" id="f-star-v" style="margin:2px 0 0"></div></div>
 <div><label for="f-ok">Could you use English in teamwork?</label><select id="f-ok"><option>Yes</option><option>No</option><option>Not sure</option></select></div>
 </div>
 <label for="f-tip">Your review (optional)</label>
@@ -104,21 +108,22 @@ var FIELDS=[['lec','Lectures'],['slides','Slides'],['exam','Exams'],['team','Tea
 var LANGS=['English','Korean','Mixed'];
 var EXPECT={'100% English':'English','Korean':'Korean'};
 var KLV=['None needed','Basic (TOPIK 1-2)','Intermediate (TOPIK 3-4)','Advanced (TOPIK 5-6)'];
-var courses=[],open={};
+var courses=[],open={},page=1,PAGE=20;
 function api(path,method,body,prefer){
 function go(auth){var h={apikey:SUPABASE_KEY,'Content-Type':'application/json'};if(prefer)h.Prefer=prefer;if(auth)h.Authorization='Bearer '+SUPABASE_KEY;
 return fetch(SUPABASE_URL+'/rest/v1/'+path,{method:method||'GET',headers:h,body:body?JSON.stringify(body):undefined})}
 return go(false).then(function(r){return r.status===401?go(true):r})}
+function matches(c,q){var h=(c.en+' '+c.ko+' '+c.prof+' '+c.id).toLowerCase();return q.toLowerCase().split(/\s+/).every(function(t){return !t||h.indexOf(t)>-1})}
 function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
 function mode(a){var c={};a.forEach(function(v){c[v]=(c[v]||0)+1});var e=Object.keys(c).map(function(k){return [k,c[k]]}).sort(function(x,y){return y[1]-x[1]});return(e.length>1&&e[0][1]===e[1][1])?'Mixed':e[0][0]}
 function summary(c){if(c.reviews.length<2)return null;var s={};FIELDS.forEach(function(f){s[f[0]]=mode(c.reviews.map(function(r){return r[f[0]]}))});return s}
 function differs(c,s,k){var e=EXPECT[c.label];return !!e&&s[k]!==e}
 function kSum(c){if(c.reviews.length<2)return null;var n=[0,0,0,0];c.reviews.forEach(function(r){n[r.kl]++});var b=0;n.forEach(function(v,i){if(v>=n[b])b=i});return b}
 function kRow(c){var k=kSum(c);return '<div class="klvl"><span>Korean level recommended</span><div class="kseg">'+KLV.map(function(l,i){return '<span'+(k===i?' class="on" aria-current="true"':'')+'>'+l+'</span>'}).join('')+'</div>'+(k===null?'<span>Not enough data</span>':'')+'</div>'}
-function stars(n){var r=Math.round(n);return '<span class="stars" aria-hidden="true">'+'\u2605'.repeat(r)+'\u2606'.repeat(5-r)+'</span>'}
+function stars(n){var r=Math.round(n*2)/2,o='';for(var i=1;i<=5;i++){o+=r>=i?'\u2605':(r>=i-0.5?'<span class="hs">\u2606<i>\u2605</i></span>':'\u2606')}return '<span class="stars" aria-hidden="true">'+o+'</span>'}
 function avgOf(c){return c.reviews.length?c.reviews.reduce(function(t,r){return t+r.rating},0)/c.reviews.length:0}
 function rate(c){var n=c.reviews.length;if(!n)return '<div class="rate"><span class="meta" style="margin:0">No ratings yet</span></div>';var a=avgOf(c);return '<div class="rate" role="img" aria-label="Average rating '+a.toFixed(1)+' out of 5 from '+n+' rating'+(n>1?'s':'')+'">'+stars(a)+'<b>'+a.toFixed(1)+'</b><span class="meta" style="margin:0">out of 5, '+n+' rating'+(n>1?'s':'')+'</span></div>'}
-function hist(c){var h=[0,0,0,0,0];c.reviews.forEach(function(r){h[r.rating-1]++});return '<div class="hist" role="img" aria-label="Rating breakdown">'+[5,4,3,2,1].map(function(i){return '<div class="hrow"><span>'+i+'\u2605</span><div class="hbar" style="width:'+(h[i-1]/c.reviews.length*70)+'%"></div></div>'}).join('')+'</div>'}
+function hist(c){var h={};c.reviews.forEach(function(r){h[r.rating]=(h[r.rating]||0)+1});var rows=[];for(var v=5;v>=0.5;v-=0.5)rows.push(v);return '<div class="hist" role="img" aria-label="Rating breakdown">'+rows.map(function(v){return '<div class="hrow"><span>'+v+'\u2605</span><div class="hbar" style="width:'+((h[v]||0)/c.reviews.length*70)+'%"></div></div>'}).join('')+'</div>'}
 function card(c){
 var s=summary(c),n=c.reviews.length,d=s?FIELDS.filter(function(f){return differs(c,s,f[0])}).length:0;
 var st=!s?'<span class="st wait">Needs 2 reviews before a summary shows</span>':d?'<span class="st bad">'+d+' of 4 parts differ from the label</span>':'<span class="st good">Matches the label</span>';
@@ -126,12 +131,16 @@ var cells=FIELDS.map(function(f){var v=s?s[f[0]]:null,x=s&&differs(c,s,f[0]);ret
 var revs='';
 if(open[c.id]){revs='<div class="revs">'+(n?hist(c)+c.reviews.map(function(r){return '<div class="rev"><div class="h">'+stars(r.rating)+' '+esc(r.sem)+'</div><div class="h">Lectures '+r.lec+', slides '+r.slides+', exams '+r.exam+', teamwork '+r.team+'. English allowed in teamwork: '+r.ok+'. Korean level recommended: '+KLV[r.kl]+'.</div>'+(r.tip?'<p>'+esc(r.tip)+'</p>':'')+'</div>'}).join(''):'<p class="meta" style="margin:0">No reviews yet. Be the first to add one below.</p>')+'</div>'}
 return '<article class="card"><div class="top"><div><h2>'+esc(c.en)+'</h2><div class="ko-name">'+esc(c.ko)+'</div>'+(c.prof?'<div class="prof">Professor: '+esc(c.prof)+'</div>':'')+'</div><span class="label">Official: '+esc(c.label)+'</span></div>'+rate(c)+st+'<div class="cells">'+cells+'</div>'+kRow(c)+'<p class="meta">'+n+' review'+(n===1?'':'s')+(n?', latest from '+esc(c.reviews[0].sem):'')+'</p><div class="acts"><button data-act="toggle" data-id="'+esc(c.id)+'" aria-expanded="'+(!!open[c.id])+'">'+(open[c.id]?'Hide reviews':'Read reviews')+'</button><button data-act="report" data-id="'+esc(c.id)+'">Report a mismatch</button></div>'+revs+'</article>'}
-function render(){
-var q=document.getElementById('q').value.trim().toLowerCase(),lf=document.getElementById('lf').value,kf=document.getElementById('kf').value;
-var list=courses.filter(function(c){return(!lf||c.label===lf)&&(!kf||(kSum(c)!==null&&kSum(c)<=+kf))&&(!q||c.en.toLowerCase().indexOf(q)>-1||c.ko.indexOf(q)>-1||c.prof.toLowerCase().indexOf(q)>-1)});
+function pager(p,n){if(n<2)return '';var a=Math.max(1,p-2),b=Math.min(n,a+4);a=Math.max(1,b-4);var h='<button data-pg="'+(p-1)+'"'+(p===1?' disabled':'')+'>Previous</button>';for(var i=a;i<=b;i++)h+='<button data-pg="'+i+'"'+(i===p?' aria-current="page"':'')+'>'+i+'</button>';return h+'<button data-pg="'+(p+1)+'"'+(p===n?' disabled':'')+'>Next</button><span class="meta" style="margin:0 0 0 6px">Page '+p+' of '+n+'</span>'}
+function render(keepPage){
+var q=document.getElementById('q').value.trim(),lf=document.getElementById('lf').value,kf=document.getElementById('kf').value;
+var list=courses.filter(function(c){return(!lf||c.label===lf)&&(!kf||(kSum(c)!==null&&kSum(c)<=+kf))&&(!q||matches(c,q))});
 var sv=document.getElementById('sf').value;list.sort(function(a,b){return sv==='rating'?avgOf(b)-avgOf(a):sv==='reviews'?b.reviews.length-a.reviews.length:0});
-document.getElementById('grid').innerHTML=list.length?list.map(card).join(''):'<p class="meta">No courses match. Try another search or filter.</p>';
-document.getElementById('count').textContent='Showing '+list.length+' of '+courses.length+' courses';
+var pages=Math.max(1,Math.ceil(list.length/PAGE));if(!keepPage)page=1;if(page>pages)page=pages;
+var from=(page-1)*PAGE,shown=list.slice(from,from+PAGE);
+document.getElementById('grid').innerHTML=shown.length?shown.map(card).join(''):'<p class="meta">No courses match. Try another search or filter.</p>';
+document.getElementById('count').textContent=list.length?'Showing '+(from+1)+'-'+(from+shown.length)+' of '+list.length+' courses':'No matching courses';
+document.getElementById('pager').innerHTML=pager(page,pages);
 }
 function fill(id,opts,ph){document.getElementById(id).innerHTML=(ph?'<option value="">'+ph+'</option>':'')+opts.map(function(o){return '<option value="'+esc(o[0])+'">'+esc(o[1])+'</option>'}).join('')}
 function load(){
@@ -140,38 +149,54 @@ if(!rs[0].ok||!rs[1].ok)throw new Error('Error codes '+rs[0].status+' and '+rs[1
 return Promise.all([rs[0].json(),rs[1].json()])}).then(function(d){
 courses=d[0].map(function(c){return {id:c.id,en:c.name_en,ko:c.name_ko||'',label:c.official_label,prof:c.professor||'',reviews:[]}});
 var by={};courses.forEach(function(c){by[c.id]=c});
-d[1].forEach(function(r){var c=by[r.course_id];if(c)c.reviews.push({rating:r.rating,kl:r.korean_level,sem:r.semester,lec:r.lectures,slides:r.slides,exam:r.exams,team:r.teamwork,ok:r.english_ok,tip:r.review_text||''})});
-fill('f-course',courses.map(function(c){return [c.id,c.en+(c.ko?' ('+c.ko+')':'')+(c.prof?' - '+c.prof:'')]}),'Choose a course');
+d[1].forEach(function(r){var c=by[r.course_id];if(c)c.reviews.push({rating:+r.rating,kl:r.korean_level,sem:r.semester,lec:r.lectures,slides:r.slides,exam:r.exams,team:r.teamwork,ok:r.english_ok,tip:r.review_text||''})});
 render()}).catch(function(e){document.getElementById('grid').innerHTML='<p class="meta">Sorry, the courses could not load ('+esc(e.message)+'). If the site has been idle for a while, the database may be waking up, so try again in a minute.</p>'})}
 FIELDS.forEach(function(f){fill('f-'+f[0],LANGS.map(function(l){return [l,l]}),'Choose')});
 fill('f-kl',KLV.map(function(l,i){return [i,l]}),'Choose');
 var rating=0,sb=document.getElementById('f-stars');
-for(var si=1;si<=5;si++){var sbt=document.createElement('button');sbt.type='button';sbt.className='star';sbt.textContent='\u2606';sbt.setAttribute('data-star',si);sbt.setAttribute('role','radio');sbt.setAttribute('aria-checked','false');sbt.setAttribute('aria-label',si+(si>1?' stars':' star'));sb.appendChild(sbt)}
-function paint(){[].forEach.call(sb.children,function(b,i){b.textContent=i<rating?'\u2605':'\u2606';b.setAttribute('aria-checked',String(i===rating-1))})}
-sb.addEventListener('click',function(e){var b=e.target.closest('[data-star]');if(!b)return;rating=+b.getAttribute('data-star');paint()});
-['q'].forEach(function(id){document.getElementById(id).addEventListener('input',render)});
-['lf','sf','kf'].forEach(function(id){document.getElementById(id).addEventListener('change',render)});
+function paint(){var o='';for(var i=1;i<=5;i++)o+='<span class="sg">'+(rating>=i?'\u2605':(rating>=i-0.5?'<span class="hs">\u2606<i>\u2605</i></span>':'\u2606'))+'</span>';sb.innerHTML=o;sb.setAttribute('aria-valuenow',rating);sb.setAttribute('aria-valuetext',rating?rating+' out of 5':'No rating yet');document.getElementById('f-star-v').textContent=rating?rating+' out of 5':'Tap a star. Tap the left half of a star for a half rating.'}
+function setRating(v){rating=Math.max(0.5,Math.min(5,v));paint()}
+sb.addEventListener('click',function(e){var rc=sb.getBoundingClientRect();setRating(Math.ceil((e.clientX-rc.left)/rc.width*10)/2)});
+sb.addEventListener('keydown',function(e){var k=e.key;if(k==='ArrowRight'||k==='ArrowUp'){e.preventDefault();setRating(rating+0.5)}else if(k==='ArrowLeft'||k==='ArrowDown'){e.preventDefault();setRating(rating?rating-0.5:0.5)}else if(k==='Home'){e.preventDefault();setRating(0.5)}else if(k==='End'){e.preventDefault();setRating(5)}});
+paint();
+var selCourse='',cbIdx=-1,cbList=[],cbIn=document.getElementById('f-course-q'),cbUl=document.getElementById('f-course-list');
+function courseLabel(c){return c.en+(c.prof?' - '+c.prof:'')}
+function cbOpen(q){cbList=courses.filter(function(c){return !q||matches(c,q)});cbIdx=cbList.length?0:-1;var shown=cbList.slice(0,60);
+cbUl.innerHTML=shown.length?shown.map(function(c,i){return '<li role="option" id="cbo'+i+'" data-id="'+esc(c.id)+'"'+(i===cbIdx?' aria-selected="true"':'')+'>'+esc(c.en)+(c.prof?'<small>'+esc(c.prof)+'</small>':'')+'</li>'}).join('')+(cbList.length>60?'<li class="hint" role="presentation">Keep typing to narrow down '+cbList.length+' matches</li>':''):'<li class="hint" role="presentation">No matching course. Try another word.</li>';
+cbUl.hidden=false;cbIn.setAttribute('aria-expanded','true');if(cbIdx>-1)cbIn.setAttribute('aria-activedescendant','cbo'+cbIdx);else cbIn.removeAttribute('aria-activedescendant')}
+function cbClose(){cbUl.hidden=true;cbIn.setAttribute('aria-expanded','false');cbIn.removeAttribute('aria-activedescendant')}
+function cbMark(){[].forEach.call(cbUl.querySelectorAll('[role=option]'),function(li,i){if(i===cbIdx){li.setAttribute('aria-selected','true');li.scrollIntoView({block:'nearest'})}else li.removeAttribute('aria-selected')});cbIn.setAttribute('aria-activedescendant','cbo'+cbIdx)}
+function setCourse(id){var c=courses.filter(function(x){return x.id===id})[0];if(!c)return;selCourse=id;cbIn.value=courseLabel(c);cbClose()}
+cbIn.addEventListener('focus',function(){if(selCourse)cbIn.select();cbOpen(selCourse?'':cbIn.value.trim())});
+cbIn.addEventListener('input',function(){selCourse='';cbOpen(cbIn.value.trim())});
+cbIn.addEventListener('blur',cbClose);
+cbIn.addEventListener('keydown',function(e){if(cbUl.hidden&&e.key==='ArrowDown'){cbOpen(selCourse?'':cbIn.value.trim());return}var n=Math.min(cbList.length,60);if(e.key==='ArrowDown'&&n){e.preventDefault();cbIdx=(cbIdx+1)%n;cbMark()}else if(e.key==='ArrowUp'&&n){e.preventDefault();cbIdx=(cbIdx-1+n)%n;cbMark()}else if(e.key==='Enter'&&!cbUl.hidden&&cbIdx>-1){e.preventDefault();setCourse(cbList[cbIdx].id)}else if(e.key==='Escape'){cbClose()}});
+cbUl.addEventListener('mousedown',function(e){var li=e.target.closest('[data-id]');if(!li)return;e.preventDefault();setCourse(li.getAttribute('data-id'))});
+document.getElementById('q').addEventListener('input',function(){render()});
+['lf','sf','kf'].forEach(function(id){document.getElementById(id).addEventListener('change',function(){render()})});
 document.addEventListener('click',function(e){
 var b=e.target.closest('[data-act]');if(!b)return;
 var id=b.getAttribute('data-id');
-if(b.getAttribute('data-act')==='toggle'){open[id]=!open[id];render();}
+if(b.getAttribute('data-act')==='toggle'){open[id]=!open[id];render(true);}
 if(b.getAttribute('data-act')==='report'){
-document.getElementById('f-course').value=id;
+setCourse(id);
 document.getElementById('formsec').scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
 document.getElementById('f-sem').focus({preventScroll:true});}
 });
 document.getElementById('post').addEventListener('click',function(){
 var err=document.getElementById('err'),ok=document.getElementById('ok'),btn=this;ok.hidden=true;
 var g=function(id){return document.getElementById(id).value};
-if(!g('f-course')||!g('f-sem')||!rating||g('f-kl')===''||!g('f-lec')||!g('f-slides')||!g('f-exam')||!g('f-team')){err.textContent='Choose a course, a semester, a star rating, a Korean level, and a language for each of the four parts.';return}
+if(!selCourse||!g('f-sem')||!rating||g('f-kl')===''||!g('f-lec')||!g('f-slides')||!g('f-exam')||!g('f-team')){err.textContent='Choose a course (pick it from the list), a semester, a star rating, a Korean level, and a language for each of the four parts.';return}
 err.textContent='';btn.disabled=true;btn.textContent='Sending…';
-var body={course_id:g('f-course'),semester:g('f-sem'),rating:rating,lectures:g('f-lec'),slides:g('f-slides'),exams:g('f-exam'),teamwork:g('f-team'),english_ok:g('f-ok'),korean_level:+g('f-kl'),review_text:g('f-tip').trim()||null,status:'pending'};
+var body={course_id:selCourse,semester:g('f-sem'),rating:rating,lectures:g('f-lec'),slides:g('f-slides'),exams:g('f-exam'),teamwork:g('f-team'),english_ok:g('f-ok'),korean_level:+g('f-kl'),review_text:g('f-tip').trim()||null,status:'pending'};
 api('reviews','POST',body,'return=minimal').then(function(r){
 if(!r.ok)throw new Error('Error code '+r.status);
 ok.textContent='Thank you! Your review was sent and will appear after a quick check.';ok.hidden=false;
 document.getElementById('f-tip').value='';rating=0;paint();
 }).catch(function(e){err.textContent='Sorry, your review could not be sent ('+e.message+'). Please try again.'}).then(function(){btn.disabled=false;btn.textContent='Post review'});
 });
+document.addEventListener('click',function(e){var p=e.target.closest('[data-pg]');if(!p||p.disabled)return;page=+p.getAttribute('data-pg');render(true);document.getElementById('count').scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'})});
+document.getElementById('jump').addEventListener('click',function(){document.getElementById('formsec').scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});cbIn.focus({preventScroll:true})});
 load();
 </script>
 </body>
