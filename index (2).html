@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Coursed</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F2F4F8;--surface:#FFFFFF;--ink:#14213D;--muted:#55607A;--line:#D9DEE8;--en:#0B6E63;--en-bg:#DDF3EF;--ko:#3B3FA8;--ko-bg:#E4E5FA;--mix:#7A5200;--mix-bg:#F8EBC9;--bad:#9A3412;--bad-bg:#FDE7DC;--good:#0B6E63;--good-bg:#DDF3EF;--btn:#14213D;--btn-ink:#FFFFFF;color-scheme:light dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0F1626;--surface:#18223A;--ink:#E8ECF5;--muted:#A3AEC8;--line:#2C3855;--en:#7FE0D2;--en-bg:#12403B;--ko:#B3B6FF;--ko-bg:#2A2D6B;--mix:#F2CF7A;--mix-bg:#4A3A10;--bad:#FFB48F;--bad-bg:#4A2413;--good:#7FE0D2;--good-bg:#12403B;--btn:#E8ECF5;--btn-ink:#0F1626}}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;font-size:16px;line-height:1.55}
+.wrap{max-width:980px;margin:0 auto;padding:28px 20px 56px}
+.proto{background:var(--mix-bg);color:var(--mix);border-radius:8px;padding:8px 14px;font-size:14px;margin-bottom:28px}
+h1{font-size:clamp(34px,7vw,52px);line-height:1.05;margin:0 0 8px;font-weight:700;letter-spacing:-.03em}
+.tag{font-size:clamp(20px,3.5vw,26px);font-weight:500;margin:0 0 10px;letter-spacing:-.01em}
+.lede{color:var(--muted);max-width:60ch;margin:0 0 24px}
+.bar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+input,select,textarea,button{font:inherit;color:var(--ink)}
+input[type=search],select,textarea{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 12px;min-height:44px}
+input[type=search]{flex:1 1 220px}
+textarea{width:100%;min-height:84px;resize:vertical}
+:focus-visible{outline:3px solid var(--ko);outline-offset:2px}
+.count{color:var(--muted);font-size:14px;margin:0 0 16px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,440px),1fr));gap:16px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px}
+.top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap}
+.card h2{font-size:20px;margin:0;line-height:1.25}
+.ko-name{color:var(--muted);font-size:14px}.prof{font-size:14px;font-weight:500;margin-top:2px}
+.label{font-size:13px;border:1px solid var(--line);border-radius:6px;padding:3px 10px;white-space:nowrap}
+.st{display:inline-block;font-size:14px;font-weight:500;border-radius:6px;padding:3px 10px;margin:12px 0}
+.good{background:var(--good-bg);color:var(--good)}.bad{background:var(--bad-bg);color:var(--bad)}.wait{background:var(--bg);color:var(--muted)}
+.cells{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.cell{border-radius:8px;padding:8px 12px;border:1.5px solid transparent}
+.cell small{display:block;font-size:13px;opacity:.85}.cell b{font-weight:500}
+.English{background:var(--en-bg);color:var(--en)}.Korean{background:var(--ko-bg);color:var(--ko)}.Mixed{background:var(--mix-bg);color:var(--mix)}.none{background:var(--bg);color:var(--muted)}
+.cell.diff{border:1.5px dashed var(--bad)}
+.meta{color:var(--muted);font-size:14px;margin:12px 0}
+.acts{display:flex;gap:8px;flex-wrap:wrap}
+button{border-radius:8px;border:1px solid var(--line);background:transparent;padding:9px 14px;min-height:44px;cursor:pointer}
+button:disabled{opacity:.6;cursor:default}
+button.pri{background:var(--btn);color:var(--btn-ink);border-color:var(--btn)}
+.revs{margin-top:14px;border-top:1px solid var(--line);padding-top:12px}
+.rev{margin:0 0 12px;font-size:15px}.rev .h{color:var(--muted);font-size:13px}
+.rev p{margin:2px 0 0}
+.form{margin-top:44px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:22px}
+.form h2{margin:0 0 4px;font-size:24px}
+.fg{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin:18px 0}
+label{display:block;font-size:14px;color:var(--muted);margin-bottom:4px}
+.fg select{width:100%}
+.err{color:var(--bad);font-size:14px;margin:8px 0 0;min-height:1.2em}
+.ok{color:var(--good);font-size:14px;margin:8px 0 0}
+.foot{color:var(--muted);font-size:14px;margin-top:28px;max-width:62ch}
+.stars{color:var(--mix);font-size:16px;letter-spacing:1px}.rate{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:10px}.rate .stars{font-size:20px}
+.hist{display:grid;gap:3px;margin-bottom:12px;max-width:260px}.hrow{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted)}.hrow span{width:26px}.hbar{height:8px;background:var(--mix);border-radius:4px}
+button.star{border:0;padding:4px 6px;font-size:28px;color:var(--mix);min-width:40px;line-height:1}
+.klvl{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:10px 0 0;font-size:14px;color:var(--muted)}.kseg{display:flex;gap:4px;flex-wrap:wrap}
+.kseg span{font-size:12px;padding:3px 8px;border-radius:6px;background:var(--bg);color:var(--muted);border:1px solid var(--line)}.kseg span.on{background:var(--ko-bg);color:var(--ko);border-color:var(--ko);font-weight:500}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="proto">Early version: new reviews appear after a quick check.</div>
+<h1>Coursed</h1>
+<p class="tag">What are Handong classes really like?</p>
+<p class="lede">Star ratings and honest reviews from international students at Handong, plus a language check that puts the official label next to what students actually experienced in lectures, slides, exams, and teamwork.</p>
+<div class="bar">
+<input type="search" id="q" placeholder="Search a course or professor, in English or Korean" aria-label="Search courses or professors">
+<select id="lf" aria-label="Filter by official label"><option value="">All official labels</option><option>100% English</option><option>English and Korean</option><option>Korean</option></select>
+<select id="sf" aria-label="Sort courses"><option value="">Original order</option><option value="rating">Highest rated</option><option value="reviews">Most reviewed</option></select>
+<select id="kf" aria-label="Filter by Korean level"><option value="">Any Korean level</option><option value="0">No Korean needed</option><option value="1">Basic or lower</option><option value="2">Intermediate or lower</option></select>
+</div>
+<p class="count" id="count" aria-live="polite"></p>
+<div class="grid" id="grid"><p class="meta">Loading courses…</p></div>
+
+<section class="form" id="formsec">
+<h2>Rate a course and write your review</h2>
+<p class="meta" style="margin:0">Give a star rating, say what language each part was in, and tell the next student what to expect. Keep it about the class itself (format, language, workload) and stay respectful.</p>
+<div class="fg">
+<div><label for="f-course">Course</label><select id="f-course"></select></div>
+<div><label for="f-sem">Semester taken</label><select id="f-sem"><option value="">Choose</option><option>2026 Fall</option><option>2026 Spring</option><option>2025 Fall</option><option>2025 Spring</option></select></div>
+<div><label for="f-lec">Lectures</label><select id="f-lec"></select></div>
+<div><label for="f-slides">Slides</label><select id="f-slides"></select></div>
+<div><label for="f-exam">Exams</label><select id="f-exam"></select></div>
+<div><label for="f-team">Teamwork and group chat</label><select id="f-team"></select></div>
+<div><label for="f-kl">Korean level you would recommend</label><select id="f-kl"></select></div>
+<div><label id="f-star-l">Your rating</label><div id="f-stars" role="radiogroup" aria-labelledby="f-star-l"></div></div>
+<div><label for="f-ok">Could you use English in teamwork?</label><select id="f-ok"><option>Yes</option><option>No</option><option>Not sure</option></select></div>
+</div>
+<label for="f-tip">Your review (optional)</label>
+<textarea id="f-tip" maxlength="600" placeholder="What was the class like? What would you tell the next student, including about the workload and the language?"></textarea>
+<p class="err" id="err" role="alert"></p>
+<div class="acts"><button class="pri" id="post">Post review</button></div>
+<p class="ok" id="ok" hidden></p>
+</section>
+<p class="foot">Reviews are checked before they appear. Please share facts about how the class is taught and stay respectful to the professor. Sign-in with a school email is planned for a later version.</p>
+</div>
+<script>
+var SUPABASE_URL='https://yddrhwhoqwuahgvfbrmq.supabase.co';
+var SUPABASE_KEY='sb_publishable_GRfIN2BwnX5lHpUae85vRA_PJf7yOC0';
+var FIELDS=[['lec','Lectures'],['slides','Slides'],['exam','Exams'],['team','Teamwork']];
+var LANGS=['English','Korean','Mixed'];
+var EXPECT={'100% English':'English','Korean':'Korean'};
+var KLV=['None needed','Basic (TOPIK 1-2)','Intermediate (TOPIK 3-4)','Advanced (TOPIK 5-6)'];
+var courses=[],open={};
+function api(path,method,body,prefer){
+function go(auth){var h={apikey:SUPABASE_KEY,'Content-Type':'application/json'};if(prefer)h.Prefer=prefer;if(auth)h.Authorization='Bearer '+SUPABASE_KEY;
+return fetch(SUPABASE_URL+'/rest/v1/'+path,{method:method||'GET',headers:h,body:body?JSON.stringify(body):undefined})}
+return go(false).then(function(r){return r.status===401?go(true):r})}
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function mode(a){var c={};a.forEach(function(v){c[v]=(c[v]||0)+1});var e=Object.keys(c).map(function(k){return [k,c[k]]}).sort(function(x,y){return y[1]-x[1]});return(e.length>1&&e[0][1]===e[1][1])?'Mixed':e[0][0]}
+function summary(c){if(c.reviews.length<2)return null;var s={};FIELDS.forEach(function(f){s[f[0]]=mode(c.reviews.map(function(r){return r[f[0]]}))});return s}
+function differs(c,s,k){var e=EXPECT[c.label];return !!e&&s[k]!==e}
+function kSum(c){if(c.reviews.length<2)return null;var n=[0,0,0,0];c.reviews.forEach(function(r){n[r.kl]++});var b=0;n.forEach(function(v,i){if(v>=n[b])b=i});return b}
+function kRow(c){var k=kSum(c);return '<div class="klvl"><span>Korean level recommended</span><div class="kseg">'+KLV.map(function(l,i){return '<span'+(k===i?' class="on" aria-current="true"':'')+'>'+l+'</span>'}).join('')+'</div>'+(k===null?'<span>Not enough data</span>':'')+'</div>'}
+function stars(n){var r=Math.round(n);return '<span class="stars" aria-hidden="true">'+'\u2605'.repeat(r)+'\u2606'.repeat(5-r)+'</span>'}
+function avgOf(c){return c.reviews.length?c.reviews.reduce(function(t,r){return t+r.rating},0)/c.reviews.length:0}
+function rate(c){var n=c.reviews.length;if(!n)return '<div class="rate"><span class="meta" style="margin:0">No ratings yet</span></div>';var a=avgOf(c);return '<div class="rate" role="img" aria-label="Average rating '+a.toFixed(1)+' out of 5 from '+n+' rating'+(n>1?'s':'')+'">'+stars(a)+'<b>'+a.toFixed(1)+'</b><span class="meta" style="margin:0">out of 5, '+n+' rating'+(n>1?'s':'')+'</span></div>'}
+function hist(c){var h=[0,0,0,0,0];c.reviews.forEach(function(r){h[r.rating-1]++});return '<div class="hist" role="img" aria-label="Rating breakdown">'+[5,4,3,2,1].map(function(i){return '<div class="hrow"><span>'+i+'\u2605</span><div class="hbar" style="width:'+(h[i-1]/c.reviews.length*70)+'%"></div></div>'}).join('')+'</div>'}
+function card(c){
+var s=summary(c),n=c.reviews.length,d=s?FIELDS.filter(function(f){return differs(c,s,f[0])}).length:0;
+var st=!s?'<span class="st wait">Needs 2 reviews before a summary shows</span>':d?'<span class="st bad">'+d+' of 4 parts differ from the label</span>':'<span class="st good">Matches the label</span>';
+var cells=FIELDS.map(function(f){var v=s?s[f[0]]:null,x=s&&differs(c,s,f[0]);return '<div class="cell '+(v||'none')+(x?' diff':'')+'"><small>'+f[1]+'</small><b>'+(v||'Not enough data')+'</b>'+(x?'<small>Differs from label</small>':'')+'</div>'}).join('');
+var revs='';
+if(open[c.id]){revs='<div class="revs">'+(n?hist(c)+c.reviews.map(function(r){return '<div class="rev"><div class="h">'+stars(r.rating)+' '+esc(r.sem)+'</div><div class="h">Lectures '+r.lec+', slides '+r.slides+', exams '+r.exam+', teamwork '+r.team+'. English allowed in teamwork: '+r.ok+'. Korean level recommended: '+KLV[r.kl]+'.</div>'+(r.tip?'<p>'+esc(r.tip)+'</p>':'')+'</div>'}).join(''):'<p class="meta" style="margin:0">No reviews yet. Be the first to add one below.</p>')+'</div>'}
+return '<article class="card"><div class="top"><div><h2>'+esc(c.en)+'</h2><div class="ko-name">'+esc(c.ko)+'</div>'+(c.prof?'<div class="prof">Professor: '+esc(c.prof)+'</div>':'')+'</div><span class="label">Official: '+esc(c.label)+'</span></div>'+rate(c)+st+'<div class="cells">'+cells+'</div>'+kRow(c)+'<p class="meta">'+n+' review'+(n===1?'':'s')+(n?', latest from '+esc(c.reviews[0].sem):'')+'</p><div class="acts"><button data-act="toggle" data-id="'+esc(c.id)+'" aria-expanded="'+(!!open[c.id])+'">'+(open[c.id]?'Hide reviews':'Read reviews')+'</button><button data-act="report" data-id="'+esc(c.id)+'">Report a mismatch</button></div>'+revs+'</article>'}
+function render(){
+var q=document.getElementById('q').value.trim().toLowerCase(),lf=document.getElementById('lf').value,kf=document.getElementById('kf').value;
+var list=courses.filter(function(c){return(!lf||c.label===lf)&&(!kf||(kSum(c)!==null&&kSum(c)<=+kf))&&(!q||c.en.toLowerCase().indexOf(q)>-1||c.ko.indexOf(q)>-1||c.prof.toLowerCase().indexOf(q)>-1)});
+var sv=document.getElementById('sf').value;list.sort(function(a,b){return sv==='rating'?avgOf(b)-avgOf(a):sv==='reviews'?b.reviews.length-a.reviews.length:0});
+document.getElementById('grid').innerHTML=list.length?list.map(card).join(''):'<p class="meta">No courses match. Try another search or filter.</p>';
+document.getElementById('count').textContent='Showing '+list.length+' of '+courses.length+' courses';
+}
+function fill(id,opts,ph){document.getElementById(id).innerHTML=(ph?'<option value="">'+ph+'</option>':'')+opts.map(function(o){return '<option value="'+esc(o[0])+'">'+esc(o[1])+'</option>'}).join('')}
+function load(){
+return Promise.all([api('courses?select=*&order=name_en,professor'),api('reviews?select=*&order=created_at.desc')]).then(function(rs){
+if(!rs[0].ok||!rs[1].ok)throw new Error('Error codes '+rs[0].status+' and '+rs[1].status);
+return Promise.all([rs[0].json(),rs[1].json()])}).then(function(d){
+courses=d[0].map(function(c){return {id:c.id,en:c.name_en,ko:c.name_ko||'',label:c.official_label,prof:c.professor||'',reviews:[]}});
+var by={};courses.forEach(function(c){by[c.id]=c});
+d[1].forEach(function(r){var c=by[r.course_id];if(c)c.reviews.push({rating:r.rating,kl:r.korean_level,sem:r.semester,lec:r.lectures,slides:r.slides,exam:r.exams,team:r.teamwork,ok:r.english_ok,tip:r.review_text||''})});
+fill('f-course',courses.map(function(c){return [c.id,c.en+(c.ko?' ('+c.ko+')':'')+(c.prof?' - '+c.prof:'')]}),'Choose a course');
+render()}).catch(function(e){document.getElementById('grid').innerHTML='<p class="meta">Sorry, the courses could not load ('+esc(e.message)+'). If the site has been idle for a while, the database may be waking up, so try again in a minute.</p>'})}
+FIELDS.forEach(function(f){fill('f-'+f[0],LANGS.map(function(l){return [l,l]}),'Choose')});
+fill('f-kl',KLV.map(function(l,i){return [i,l]}),'Choose');
+var rating=0,sb=document.getElementById('f-stars');
+for(var si=1;si<=5;si++){var sbt=document.createElement('button');sbt.type='button';sbt.className='star';sbt.textContent='\u2606';sbt.setAttribute('data-star',si);sbt.setAttribute('role','radio');sbt.setAttribute('aria-checked','false');sbt.setAttribute('aria-label',si+(si>1?' stars':' star'));sb.appendChild(sbt)}
+function paint(){[].forEach.call(sb.children,function(b,i){b.textContent=i<rating?'\u2605':'\u2606';b.setAttribute('aria-checked',String(i===rating-1))})}
+sb.addEventListener('click',function(e){var b=e.target.closest('[data-star]');if(!b)return;rating=+b.getAttribute('data-star');paint()});
+['q'].forEach(function(id){document.getElementById(id).addEventListener('input',render)});
+['lf','sf','kf'].forEach(function(id){document.getElementById(id).addEventListener('change',render)});
+document.addEventListener('click',function(e){
+var b=e.target.closest('[data-act]');if(!b)return;
+var id=b.getAttribute('data-id');
+if(b.getAttribute('data-act')==='toggle'){open[id]=!open[id];render();}
+if(b.getAttribute('data-act')==='report'){
+document.getElementById('f-course').value=id;
+document.getElementById('formsec').scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
+document.getElementById('f-sem').focus({preventScroll:true});}
+});
+document.getElementById('post').addEventListener('click',function(){
+var err=document.getElementById('err'),ok=document.getElementById('ok'),btn=this;ok.hidden=true;
+var g=function(id){return document.getElementById(id).value};
+if(!g('f-course')||!g('f-sem')||!rating||g('f-kl')===''||!g('f-lec')||!g('f-slides')||!g('f-exam')||!g('f-team')){err.textContent='Choose a course, a semester, a star rating, a Korean level, and a language for each of the four parts.';return}
+err.textContent='';btn.disabled=true;btn.textContent='Sending…';
+var body={course_id:g('f-course'),semester:g('f-sem'),rating:rating,lectures:g('f-lec'),slides:g('f-slides'),exams:g('f-exam'),teamwork:g('f-team'),english_ok:g('f-ok'),korean_level:+g('f-kl'),review_text:g('f-tip').trim()||null,status:'pending'};
+api('reviews','POST',body,'return=minimal').then(function(r){
+if(!r.ok)throw new Error('Error code '+r.status);
+ok.textContent='Thank you! Your review was sent and will appear after a quick check.';ok.hidden=false;
+document.getElementById('f-tip').value='';rating=0;paint();
+}).catch(function(e){err.textContent='Sorry, your review could not be sent ('+e.message+'). Please try again.'}).then(function(){btn.disabled=false;btn.textContent='Post review'});
+});
+load();
+</script>
+</body>
+</html>
