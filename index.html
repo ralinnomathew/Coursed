@@ -57,7 +57,7 @@ label{display:block;font-size:14px;color:var(--muted);margin-bottom:4px}
 button.star{border:0;padding:4px 6px;font-size:28px;color:var(--mix);min-width:40px;line-height:1}
 .klvl{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:10px 0 0;font-size:14px;color:var(--muted)}.kseg{display:flex;gap:4px;flex-wrap:wrap}
 .kseg span{font-size:12px;padding:3px 8px;border-radius:6px;background:var(--bg);color:var(--muted);border:1px solid var(--line)}.kseg span.on{background:var(--ko-bg);color:var(--ko);border-color:var(--ko);font-weight:500}
-.cb{position:relative}.cb input{width:100%}#f-course-list{position:absolute;z-index:5;left:0;right:0;top:100%;margin:4px 0 0;padding:4px;list-style:none;max-height:260px;overflow:auto;background:var(--surface);border:1px solid var(--line);border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.18)}#f-course-list li{padding:8px 10px;border-radius:6px;cursor:pointer;font-size:15px;line-height:1.3}#f-course-list li small{display:block;color:var(--muted);font-size:13px}#f-course-list li[aria-selected=true]{background:var(--ko-bg);color:var(--ko)}#f-course-list li[aria-selected=true] small{color:var(--ko)}#f-course-list li.hint{cursor:default;color:var(--muted);font-size:14px}
+.cb{position:relative}.cb input{width:100%}#f-course-list,#q-list{position:absolute;z-index:5;left:0;right:0;top:100%;margin:4px 0 0;padding:4px;list-style:none;max-height:260px;overflow:auto;background:var(--surface);border:1px solid var(--line);border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.18)}#f-course-list li,#q-list li{padding:8px 10px;border-radius:6px;cursor:pointer;font-size:15px;line-height:1.3}#f-course-list li small,#q-list li small{display:block;color:var(--muted);font-size:13px}#f-course-list li[aria-selected=true],#q-list li[aria-selected=true]{background:var(--ko-bg);color:var(--ko)}#f-course-list li[aria-selected=true] small,#q-list li[aria-selected=true] small{color:var(--ko)}#f-course-list li.hint,#q-list li.hint{cursor:default;color:var(--muted);font-size:14px}.sq{position:relative;flex:1 1 260px}.sq input{width:100%}
 .pager{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin:20px 0 0}.pager button{min-width:44px}.pager button[aria-current=page]{background:var(--btn);color:var(--btn-ink);border-color:var(--btn)}
 .sw{display:inline-flex;cursor:pointer;touch-action:manipulation;user-select:none;border-radius:8px}.sg{width:38px;text-align:center;font-size:32px;line-height:1.2;color:var(--mix)}.hs{position:relative;display:inline-block}.hs i{position:absolute;left:0;top:0;width:50%;overflow:hidden;font-style:normal}.hrow span{width:34px}
 @media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
@@ -70,7 +70,7 @@ button.star{border:0;padding:4px 6px;font-size:28px;color:var(--mix);min-width:4
 <p class="tag">What are Handong classes really like?</p>
 <p class="lede">Star ratings and honest reviews from international students at Handong, plus a language check that puts the official English rate next to what students actually experienced in lectures, slides, exams, and teamwork.</p>
 <div class="bar">
-<input type="search" id="q" placeholder="Search a course or professor, in English or Korean" aria-label="Search courses or professors">
+<div class="cb sq"><input type="search" id="q" role="combobox" aria-expanded="false" aria-controls="q-list" aria-autocomplete="list" autocomplete="off" placeholder="Search a course or professor, in English or Korean" aria-label="Search courses or professors"><ul id="q-list" role="listbox" aria-label="Matching courses and professors" hidden></ul></div>
 <select id="lf" aria-label="Filter by English rate"><option value="">Any English rate</option><option value="100">100% English</option><option value="50">50% English or more</option><option value="1">Any English (1% or more)</option><option value="0">0% English</option></select>
 <select id="sf" aria-label="Sort courses"><option value="">Original order</option><option value="rating">Highest rated</option><option value="reviews">Most reviewed</option></select>
 <select id="kf" aria-label="Filter by Korean level"><option value="">Any Korean level</option><option value="0">No Korean needed</option><option value="1">Basic or lower</option><option value="2">Intermediate or lower</option></select><button class="pri" id="jump">Write a review</button>
@@ -135,7 +135,7 @@ return '<article class="card"><div class="top"><div><h2>'+esc(c.en)+'</h2><div c
 function pager(p,n){if(n<2)return '';var a=Math.max(1,p-2),b=Math.min(n,a+4);a=Math.max(1,b-4);var h='<button data-pg="'+(p-1)+'"'+(p===1?' disabled':'')+'>Previous</button>';for(var i=a;i<=b;i++)h+='<button data-pg="'+i+'"'+(i===p?' aria-current="page"':'')+'>'+i+'</button>';return h+'<button data-pg="'+(p+1)+'"'+(p===n?' disabled':'')+'>Next</button><span class="meta" style="margin:0 0 0 6px">Page '+p+' of '+n+'</span>'}
 function render(keepPage){
 var q=document.getElementById('q').value.trim(),lf=document.getElementById('lf').value,kf=document.getElementById('kf').value;
-var list=courses.filter(function(c){return(!lf||(lf==='100'?c.rate===100:lf==='0'?c.rate===0:c.rate>=+lf))&&(!kf||(kSum(c)!==null&&kSum(c)<=+kf))&&(!q||matches(c,q))});
+var list=courses.filter(function(c){return(!lf||(lf==='100'?c.rate===100:lf==='0'?c.rate===0:c.rate>=+lf))&&(!kf||(kSum(c)!==null&&kSum(c)<=+kf))&&(qSel?c.id===qSel:(!q||matches(c,q)))});
 var sv=document.getElementById('sf').value;list.sort(function(a,b){return sv==='rating'?avgOf(b)-avgOf(a):sv==='reviews'?b.reviews.length-a.reviews.length:0});
 var pages=Math.max(1,Math.ceil(list.length/PAGE));if(!keepPage)page=1;if(page>pages)page=pages;
 var from=(page-1)*PAGE,shown=list.slice(from,from+PAGE);
@@ -173,7 +173,19 @@ cbIn.addEventListener('input',function(){selCourse='';cbOpen(cbIn.value.trim())}
 cbIn.addEventListener('blur',cbClose);
 cbIn.addEventListener('keydown',function(e){if(cbUl.hidden&&e.key==='ArrowDown'){cbOpen(selCourse?'':cbIn.value.trim());return}var n=Math.min(cbList.length,60);if(e.key==='ArrowDown'&&n){e.preventDefault();cbIdx=(cbIdx+1)%n;cbMark()}else if(e.key==='ArrowUp'&&n){e.preventDefault();cbIdx=(cbIdx-1+n)%n;cbMark()}else if(e.key==='Enter'&&!cbUl.hidden&&cbIdx>-1){e.preventDefault();setCourse(cbList[cbIdx].id)}else if(e.key==='Escape'){cbClose()}});
 cbUl.addEventListener('mousedown',function(e){var li=e.target.closest('[data-id]');if(!li)return;e.preventDefault();setCourse(li.getAttribute('data-id'))});
-document.getElementById('q').addEventListener('input',function(){render()});
+var qSel='',qIn=document.getElementById('q'),qUl=document.getElementById('q-list'),qIdx=-1,qList=[];
+function qOpen(){var t=qIn.value.trim();if(!t){qClose();return}var lo=t.toLowerCase();qList=courses.filter(function(c){return matches(c,t)});
+qList.sort(function(a,b){function sc(c){return(c.en.toLowerCase().indexOf(lo)===0||c.prof.toLowerCase().indexOf(lo)===0)?0:1}return sc(a)-sc(b)});qIdx=-1;var shown=qList.slice(0,8);
+qUl.innerHTML=shown.length?shown.map(function(c,i){return '<li role="option" id="qo'+i+'" data-id="'+esc(c.id)+'">'+esc(c.en)+'<small>'+(c.prof?esc(c.prof)+' \u00b7 ':'')+c.rate+'% English</small></li>'}).join('')+(qList.length>8?'<li class="hint" role="presentation">+ '+(qList.length-8)+' more below. Keep typing to narrow down.</li>':''):'<li class="hint" role="presentation">No matching course or professor.</li>';
+qUl.hidden=false;qIn.setAttribute('aria-expanded','true');qIn.removeAttribute('aria-activedescendant')}
+function qClose(){qUl.hidden=true;qIn.setAttribute('aria-expanded','false');qIn.removeAttribute('aria-activedescendant');qIdx=-1}
+function qMark(){[].forEach.call(qUl.querySelectorAll('[role=option]'),function(li,i){if(i===qIdx){li.setAttribute('aria-selected','true');li.scrollIntoView({block:'nearest'})}else li.removeAttribute('aria-selected')});if(qIdx>-1)qIn.setAttribute('aria-activedescendant','qo'+qIdx);else qIn.removeAttribute('aria-activedescendant')}
+function qPick(id){var c=courses.filter(function(x){return x.id===id})[0];if(!c)return;qIn.value=c.en+(c.prof?' '+c.prof:'');qSel=id;qClose();render()}
+qIn.addEventListener('input',function(){qSel='';render();qOpen()});
+qIn.addEventListener('focus',function(){if(qIn.value.trim())qOpen()});
+qIn.addEventListener('blur',qClose);
+qIn.addEventListener('keydown',function(e){var n=Math.min(qList.length,8);if(e.key==='ArrowDown'){if(qUl.hidden){qOpen();if(qUl.hidden)return}if(n){e.preventDefault();qIdx=(qIdx+1)%n;qMark()}}else if(e.key==='ArrowUp'&&!qUl.hidden&&n){e.preventDefault();qIdx=(qIdx-1+n)%n;qMark()}else if(e.key==='Enter'&&!qUl.hidden){if(qIdx>-1){e.preventDefault();qPick(qList[qIdx].id)}else qClose()}else if(e.key==='Escape'&&!qUl.hidden){e.preventDefault();qClose()}});
+qUl.addEventListener('mousedown',function(e){var li=e.target.closest('[data-id]');if(!li)return;e.preventDefault();qPick(li.getAttribute('data-id'))});
 ['lf','sf','kf'].forEach(function(id){document.getElementById(id).addEventListener('change',function(){render()})});
 document.addEventListener('click',function(e){
 var b=e.target.closest('[data-act]');if(!b)return;
