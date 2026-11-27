@@ -2,17 +2,18 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<meta name="theme-color" content="#050706">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Coursed</title>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;500;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#F2F4F8;--surface:#FFFFFF;--ink:#14213D;--muted:#55607A;--line:#D9DEE8;--en:#0B6E63;--en-bg:#DDF3EF;--ko:#3B3FA8;--ko-bg:#E4E5FA;--mix:#7A5200;--mix-bg:#F8EBC9;--bad:#9A3412;--bad-bg:#FDE7DC;--good:#0B6E63;--good-bg:#DDF3EF;--btn:#14213D;--btn-ink:#FFFFFF;color-scheme:light dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0F1626;--surface:#18223A;--ink:#E8ECF5;--muted:#A3AEC8;--line:#2C3855;--en:#7FE0D2;--en-bg:#12403B;--ko:#B3B6FF;--ko-bg:#2A2D6B;--mix:#F2CF7A;--mix-bg:#4A3A10;--bad:#FFB48F;--bad-bg:#4A2413;--good:#7FE0D2;--good-bg:#12403B;--btn:#E8ECF5;--btn-ink:#0F1626}}
+:root{--bg:#050706;--surface:#0E1210;--ink:#F1F5F2;--muted:#9FB0A5;--line:#26302A;--acc:#34D673;--en:#4ADE80;--en-bg:#0D3A20;--en-line:#1B6B3A;--ko:#F1F5F2;--ko-bg:#2A2F2C;--mix:#FDE68A;--mix-bg:#3F3410;--bad:#FFA98A;--bad-bg:#40200F;--good:#4ADE80;--good-bg:#0D3A20;--btn:#34D673;--btn-ink:#04140A;color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;font-size:16px;line-height:1.55}
 .wrap{max-width:980px;margin:0 auto;padding:28px 20px 56px}
-.proto{background:var(--mix-bg);color:var(--mix);border-radius:8px;padding:8px 14px;font-size:14px;margin-bottom:28px}
+.proto{background:var(--en-bg);color:var(--acc);border:1px solid var(--en-line);border-radius:8px;padding:8px 14px;font-size:14px;margin-bottom:28px}
 h1{font-size:clamp(34px,7vw,52px);line-height:1.05;margin:0 0 8px;font-weight:700;letter-spacing:-.03em}
 .tag{font-size:clamp(20px,3.5vw,26px);font-weight:500;margin:0 0 10px;letter-spacing:-.01em}
 .lede{color:var(--muted);max-width:60ch;margin:0 0 24px}
@@ -21,7 +22,7 @@ input,select,textarea,button{font:inherit;color:var(--ink)}
 input[type=search],input[type=text],select,textarea{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 12px;min-height:44px}
 input[type=search]{flex:1 1 220px}
 textarea{width:100%;min-height:84px;resize:vertical}
-:focus-visible{outline:3px solid var(--ko);outline-offset:2px}
+:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
 .count{color:var(--muted);font-size:14px;margin:0 0 16px}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,440px),1fr));gap:16px}
 .card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px}
@@ -52,20 +53,25 @@ label{display:block;font-size:14px;color:var(--muted);margin-bottom:4px}
 .err{color:var(--bad);font-size:14px;margin:8px 0 0;min-height:1.2em}
 .ok{color:var(--good);font-size:14px;margin:8px 0 0}
 .foot{color:var(--muted);font-size:14px;margin-top:28px;max-width:62ch}
-.stars{color:var(--mix);font-size:16px;letter-spacing:1px}.rate{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:10px}.rate .stars{font-size:20px}
-.hist{display:grid;gap:3px;margin-bottom:12px;max-width:260px}.hrow{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted)}.hrow span{width:26px}.hbar{height:8px;background:var(--mix);border-radius:4px}
-button.star{border:0;padding:4px 6px;font-size:28px;color:var(--mix);min-width:40px;line-height:1}
+.stars{color:var(--acc);font-size:16px;letter-spacing:1px}.rate{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:10px}.rate .stars{font-size:20px}
+.hist{display:grid;gap:3px;margin-bottom:12px;max-width:260px}.hrow{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted)}.hrow span{width:26px}.hbar{height:8px;background:var(--acc);border-radius:4px}
+button.star{border:0;padding:4px 6px;font-size:28px;color:var(--acc);min-width:40px;line-height:1}
 .klvl{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:10px 0 0;font-size:14px;color:var(--muted)}.kseg{display:flex;gap:4px;flex-wrap:wrap}
-.kseg span{font-size:12px;padding:3px 8px;border-radius:6px;background:var(--bg);color:var(--muted);border:1px solid var(--line)}.kseg span.on{background:var(--ko-bg);color:var(--ko);border-color:var(--ko);font-weight:500}
-.cb{position:relative}.cb input{width:100%}#f-course-list,#q-list{position:absolute;z-index:5;left:0;right:0;top:100%;margin:4px 0 0;padding:4px;list-style:none;max-height:260px;overflow:auto;background:var(--surface);border:1px solid var(--line);border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.18)}#f-course-list li,#q-list li{padding:8px 10px;border-radius:6px;cursor:pointer;font-size:15px;line-height:1.3}#f-course-list li small,#q-list li small{display:block;color:var(--muted);font-size:13px}#f-course-list li[aria-selected=true],#q-list li[aria-selected=true]{background:var(--ko-bg);color:var(--ko)}#f-course-list li[aria-selected=true] small,#q-list li[aria-selected=true] small{color:var(--ko)}#f-course-list li.hint,#q-list li.hint{cursor:default;color:var(--muted);font-size:14px}.sq{position:relative;flex:1 1 260px}.sq input{width:100%}
+.kseg span{font-size:12px;padding:3px 8px;border-radius:6px;background:var(--bg);color:var(--muted);border:1px solid var(--line)}.kseg span.on{background:var(--en-bg);color:var(--acc);border-color:var(--acc);font-weight:500}
+.cb{position:relative}.cb input{width:100%}#f-course-list,#q-list{position:absolute;z-index:5;left:0;right:0;top:100%;margin:4px 0 0;padding:4px;list-style:none;max-height:260px;overflow:auto;background:var(--surface);border:1px solid var(--line);border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.18)}#f-course-list li,#q-list li{padding:8px 10px;border-radius:6px;cursor:pointer;font-size:15px;line-height:1.3}#f-course-list li small,#q-list li small{display:block;color:var(--muted);font-size:13px}#f-course-list li[aria-selected=true],#q-list li[aria-selected=true]{background:var(--en-bg);color:var(--acc)}#f-course-list li[aria-selected=true] small,#q-list li[aria-selected=true] small{color:var(--acc)}#f-course-list li.hint,#q-list li.hint{cursor:default;color:var(--muted);font-size:14px}.sq{position:relative;flex:1 1 260px}.sq input{width:100%}
 .pager{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin:20px 0 0}.pager button{min-width:44px}.pager button[aria-current=page]{background:var(--btn);color:var(--btn-ink);border-color:var(--btn)}
-.sw{display:inline-flex;cursor:pointer;touch-action:manipulation;user-select:none;border-radius:8px}.sg{width:38px;text-align:center;font-size:32px;line-height:1.2;color:var(--mix)}.hs{position:relative;display:inline-block}.hs i{position:absolute;left:0;top:0;width:50%;overflow:hidden;font-style:normal}.hrow span{width:34px}
-.card{transition:border-color .15s,box-shadow .15s}.card:hover{border-color:var(--ko);box-shadow:0 6px 20px rgba(20,33,61,.08)}
+.sw{display:inline-flex;cursor:pointer;touch-action:manipulation;user-select:none;border-radius:8px}.sg{width:38px;text-align:center;font-size:32px;line-height:1.2;color:var(--acc)}.hs{position:relative;display:inline-block}.hs i{position:absolute;left:0;top:0;width:50%;overflow:hidden;font-style:normal}.hrow span{width:34px}
+.card{transition:border-color .18s,box-shadow .18s,transform .18s}.card:hover{border-color:var(--acc);box-shadow:0 10px 28px rgba(52,214,115,.14);transform:translateY(-3px)}
+button{transition:background .15s,border-color .15s,transform .15s}button:hover:not(:disabled){border-color:var(--acc)}button.pri:hover:not(:disabled){background:#5BE592;border-color:#5BE592}button:active:not(:disabled){transform:translateY(1px)}
+#f-course-list li:hover,#q-list li:hover{background:var(--en-bg)}
+h1::after{content:".";color:var(--acc)}
+.cell{border-color:var(--line)}.English{border-color:var(--en-line)}.Mixed{border-color:#6B5A1B}
+@media (prefers-reduced-motion:reduce){.card:hover{transform:none}}
 .stats{display:flex;gap:4px 18px;flex-wrap:wrap;color:var(--muted);font-size:14px;margin:-6px 0 22px}.stats b{color:var(--ink);font-weight:700}
 .note{color:var(--muted);font-size:14px;margin:2px 0 14px;max-width:72ch}.note b{color:var(--ink);font-weight:500}
 .step{display:flex;align-items:center;gap:10px;margin:24px 0 0;font-size:18px;line-height:1.3}.step i{flex:none;display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--btn);color:var(--btn-ink);font-size:14px;font-style:normal;font-weight:700}.step small{color:var(--muted);font-weight:400;font-size:14px}
 .hint{display:block;color:var(--muted);font-size:13px;margin-top:4px}
-.badge{display:inline-block;background:var(--mix-bg);color:var(--mix);border-radius:999px;padding:2px 12px;font-size:14px;font-weight:500}
+.badge{display:inline-block;background:var(--en-bg);color:var(--acc);border:1px solid var(--en-line);border-radius:999px;padding:2px 12px;font-size:14px;font-weight:500}
 .rev .x{color:var(--muted);font-size:13px}
 @media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
 </style>
@@ -75,7 +81,7 @@ button.star{border:0;padding:4px 6px;font-size:28px;color:var(--mix);min-width:4
 <div class="proto">Early version: new reviews appear after a quick check.</div>
 <h1>Coursed</h1>
 <p class="tag">What are Handong classes really like?</p>
-<p class="lede">Star ratings and honest reviews from international students at Handong, plus a language check that puts the official English rate next to what students actually experienced in lectures, slides, exams, and teamwork.</p>
+<p class="lede">Honest ratings from international students at Handong, plus a language check: the official English rate next to what students really experienced.</p>
 <p class="stats" id="stats" aria-live="polite"></p>
 <div class="bar">
 <div class="cb sq"><input type="search" id="q" role="combobox" aria-expanded="false" aria-controls="q-list" aria-autocomplete="list" autocomplete="off" placeholder="Search a course or professor, in English or Korean" aria-label="Search courses or professors"><ul id="q-list" role="listbox" aria-label="Matching courses and professors" hidden></ul></div>
@@ -83,14 +89,14 @@ button.star{border:0;padding:4px 6px;font-size:28px;color:var(--mix);min-width:4
 <select id="sf" aria-label="Sort courses"><option value="">Original order</option><option value="rating">Highest rated</option><option value="reviews">Most reviewed</option></select>
 <select id="kf" aria-label="Filter by Korean level"><option value="">Any Korean level</option><option value="0">No Korean needed</option><option value="1">Basic or lower</option><option value="2">Intermediate or lower</option></select><button class="pri" id="jump">Write a review</button>
 </div>
-<p class="note"><b>English rate</b> is the official rate from HISnet. The language check on each card shows what students actually experienced, so the two can differ.</p>
+<p class="note"><b>English rate</b> is the official HISnet rate. The cards show what students experienced, which can differ.</p>
 <p class="count" id="count" aria-live="polite"></p>
 <div class="grid" id="grid"><p class="meta">Loading courses…</p></div>
 <nav class="pager" id="pager" aria-label="Course pages"></nav>
 
 <section class="form" id="formsec">
 <h2>Rate a course and write your review</h2>
-<p class="meta" style="margin:0">Takes about two minutes. Steps 1 and 2 are required. Step 3 is optional but helps the next student a lot. Keep it about the class itself and stay respectful.</p>
+<p class="meta" style="margin:0">About 2 minutes. Steps 1 and 2 are required, step 3 is optional. Keep it about the class and stay respectful.</p>
 <p class="meta" id="badge" style="margin:8px 0 0"></p>
 <h3 class="step"><i>1</i>Which class? <small>required</small></h3>
 <div class="fg">
@@ -118,7 +124,7 @@ button.star{border:0;padding:4px 6px;font-size:28px;color:var(--mix);min-width:4
 <div class="acts"><button class="pri" id="post">Post review</button></div>
 <p class="ok" id="ok" hidden></p>
 </section>
-<p class="foot">Reviews are checked before they appear. Please share facts about how the class is taught and stay respectful to the professor. Sign-in with a school email is planned for a later version.</p>
+<p class="foot">Reviews are checked before they appear. Sign-in with a school email is planned for a later version.</p>
 </div>
 <script>
 var SUPABASE_URL='https://yddrhwhoqwuahgvfbrmq.supabase.co';
