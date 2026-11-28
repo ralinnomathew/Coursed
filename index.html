@@ -70,6 +70,7 @@ h1::after{content:".";color:var(--acc)}
 .stats{display:flex;gap:4px 18px;flex-wrap:wrap;color:var(--muted);font-size:14px;margin:-6px 0 22px}.stats b{color:var(--ink);font-weight:700}
 .note{color:var(--muted);font-size:14px;margin:2px 0 14px;max-width:72ch}.note b{color:var(--ink);font-weight:500}
 .step{display:flex;align-items:center;gap:10px;margin:24px 0 0;font-size:18px;line-height:1.3}.step i{flex:none;display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--btn);color:var(--btn-ink);font-size:14px;font-style:normal;font-weight:700}.step small{color:var(--muted);font-weight:400;font-size:14px}
+.fr{display:flex;justify-content:space-between;align-items:center;gap:10px 20px;flex-wrap:wrap;margin:8px 0 4px}.fr h2{margin:0;font-size:22px}.wr{display:flex;align-items:center;gap:12px;color:var(--muted);font-size:14px}
 .hint{display:block;color:var(--muted);font-size:13px;margin-top:4px}
 .badge{display:inline-block;background:var(--en-bg);color:var(--acc);border:1px solid var(--en-line);border-radius:999px;padding:2px 12px;font-size:14px;font-weight:500}
 .rev .x{color:var(--muted);font-size:13px}
@@ -83,11 +84,13 @@ h1::after{content:".";color:var(--acc)}
 <p class="tag">What are Handong classes really like?</p>
 <p class="lede">Honest ratings from international students at Handong, plus a language check: the official English rate next to what students really experienced.</p>
 <p class="stats" id="stats" aria-live="polite"></p>
+<div class="fr"><h2 id="find-h">Find course reviews</h2><div class="wr"><span>Took a class already?</span><button class="pri" id="jump">Write a review</button></div></div>
+<p class="meta" style="margin:0 0 10px">Search a course or professor to read what other students said.</p>
 <div class="bar">
-<div class="cb sq"><input type="search" id="q" role="combobox" aria-expanded="false" aria-controls="q-list" aria-autocomplete="list" autocomplete="off" placeholder="Search a course or professor, in English or Korean" aria-label="Search courses or professors"><ul id="q-list" role="listbox" aria-label="Matching courses and professors" hidden></ul></div>
+<div class="cb sq"><input type="search" id="q" role="combobox" aria-expanded="false" aria-controls="q-list" aria-autocomplete="list" autocomplete="off" placeholder="Course or professor name" aria-label="Search course reviews by course or professor"><ul id="q-list" role="listbox" aria-label="Matching courses and professors" hidden></ul></div>
 <select id="lf" aria-label="Filter by English rate"><option value="">Any English rate</option><option value="100">100% English</option><option value="50">50% English or more</option><option value="1">Any English (1% or more)</option><option value="0">0% English</option></select>
 <select id="sf" aria-label="Sort courses"><option value="">Original order</option><option value="rating">Highest rated</option><option value="reviews">Most reviewed</option></select>
-<select id="kf" aria-label="Filter by Korean level"><option value="">Any Korean level</option><option value="0">No Korean needed</option><option value="1">Basic or lower</option><option value="2">Intermediate or lower</option></select><button class="pri" id="jump">Write a review</button>
+<select id="kf" aria-label="Filter by Korean level"><option value="">Any Korean level</option><option value="0">No Korean needed</option><option value="1">Basic or lower</option><option value="2">Intermediate or lower</option></select>
 </div>
 <p class="note"><b>English rate</b> is the official HISnet rate. The cards show what students experienced, which can differ.</p>
 <p class="count" id="count" aria-live="polite"></p>
@@ -100,7 +103,7 @@ h1::after{content:".";color:var(--acc)}
 <p class="meta" id="badge" style="margin:8px 0 0"></p>
 <h3 class="step"><i>1</i>Which class? <small>required</small></h3>
 <div class="fg">
-<div><label for="f-course-q">Course</label><div class="cb"><input type="text" id="f-course-q" role="combobox" aria-expanded="false" aria-controls="f-course-list" aria-autocomplete="list" autocomplete="off" placeholder="Search by course or professor"><ul id="f-course-list" role="listbox" hidden></ul></div></div>
+<div><label for="f-course-q">Course you took</label><div class="cb"><input type="text" id="f-course-q" role="combobox" aria-expanded="false" aria-controls="f-course-list" aria-autocomplete="list" autocomplete="off" placeholder="Type the course or professor you took"><ul id="f-course-list" role="listbox" hidden></ul></div></div>
 <div><label for="f-sem">Semester taken</label><select id="f-sem"><option value="">Choose</option><option>2026 Fall</option><option>2026 Spring</option><option>2025 Fall</option><option>2025 Spring</option></select></div>
 <div><label id="f-star-l">Your rating</label><div id="f-stars" class="sw" role="slider" tabindex="0" aria-labelledby="f-star-l" aria-valuemin="0.5" aria-valuemax="5" aria-valuenow="0" aria-valuetext="No rating yet"></div><div class="meta" id="f-star-v" style="margin:2px 0 0"></div></div>
 </div>
@@ -109,9 +112,8 @@ h1::after{content:".";color:var(--acc)}
 <div><label for="f-lec">Lectures</label><select id="f-lec"></select><span class="hint">What the professor spoke in class</span></div>
 <div><label for="f-slides">Slides</label><select id="f-slides"></select><span class="hint">Choose "No slides used" if there were none</span></div>
 <div><label for="f-exam">Exams</label><select id="f-exam"></select><span class="hint">The language of the questions</span></div>
-<div><label for="f-team">Teamwork and group chat</label><select id="f-team"></select><span class="hint">What your team actually used</span></div>
+<div><label for="f-team">Teamwork and group chat</label><select id="f-team"></select><span class="hint">What your team used in meetings and group chat</span></div>
 <div><label for="f-kl">Korean level you would recommend</label><select id="f-kl"></select></div>
-<div><label for="f-ok">Could you use English in teamwork?</label><select id="f-ok"><option>Yes</option><option>No</option><option>Not sure</option></select></div>
 </div>
 <h3 class="step"><i>3</i>Tell the next student more <small>optional</small></h3>
 <div class="fg">
@@ -163,7 +165,7 @@ var s=summary(c),n=c.reviews.length,d=s?FIELDS.filter(function(f){return differs
 var st=!s?'<span class="st wait">Needs 2 reviews before a summary shows</span>':!expectOf(c)?'<span class="st wait">Partly English ('+c.rate+'%): compare the parts below</span>':d?'<span class="st bad">'+d+' of 4 parts differ from the official English rate</span>':'<span class="st good">Matches the official English rate</span>';
 var cells=FIELDS.map(function(f){var v=s?s[f[0]]:null,x=s&&differs(c,s,f[0]);return '<div class="cell '+(v==='N/A'?'NA':(v||'none'))+(x?' diff':'')+'"><small>'+f[1]+'</small><b>'+(v?lbl(v):'Not enough data')+'</b>'+(x?'<small>Official rate expects '+expectOf(c)+'</small>':'')+'</div>'}).join('');
 var revs='';
-if(open[c.id]){revs='<div class="revs">'+(n?hist(c)+c.reviews.map(function(r){return '<div class="rev"><div class="h">'+stars(r.rating)+' '+esc(r.sem)+'</div><div class="h">Lectures '+lbl(r.lec)+', slides '+lbl(r.slides)+', exams '+lbl(r.exam)+', teamwork '+lbl(r.team)+'. English allowed in teamwork: '+r.ok+'. Korean level recommended: '+KLV[r.kl]+'.</div>'+((r.wl||r.gr)?'<div class="h">'+(r.wl?'Workload: '+esc(r.wl)+'. ':'')+(r.gr?'Grading: '+esc(r.gr)+'.':'')+'</div>':'')+(r.tip?'<p>'+esc(r.tip)+'</p>':'')+'</div>'}).join(''):'<p class="meta" style="margin:0">No reviews yet. Be the first to add one below.</p>')+'</div>'}
+if(open[c.id]){revs='<div class="revs">'+(n?hist(c)+c.reviews.map(function(r){return '<div class="rev"><div class="h">'+stars(r.rating)+' '+esc(r.sem)+'</div><div class="h">Lectures '+lbl(r.lec)+', slides '+lbl(r.slides)+', exams '+lbl(r.exam)+', teamwork '+lbl(r.team)+'. Korean level recommended: '+KLV[r.kl]+'.</div>'+((r.wl||r.gr)?'<div class="h">'+(r.wl?'Workload: '+esc(r.wl)+'. ':'')+(r.gr?'Grading: '+esc(r.gr)+'.':'')+'</div>':'')+(r.tip?'<p>'+esc(r.tip)+'</p>':'')+'</div>'}).join(''):'<p class="meta" style="margin:0">No reviews yet. Be the first to add one below.</p>')+'</div>'}
 return '<article class="card"><div class="top"><div><h2>'+esc(c.en)+'</h2><div class="ko-name">'+esc(c.ko)+'</div>'+(c.prof?'<div class="prof">Professor: '+esc(c.prof)+'</div>':'')+'</div><span class="label">English rate: '+c.rate+'%</span></div>'+rate(c)+st+'<div class="cells">'+cells+'</div>'+kRow(c)+facts(c)+'<p class="meta">'+n+' review'+(n===1?'':'s')+(n?', latest from '+esc(c.reviews[0].sem):'')+'</p><div class="acts"><button data-act="toggle" data-id="'+esc(c.id)+'" aria-expanded="'+(!!open[c.id])+'">'+(open[c.id]?'Hide reviews':'Read reviews')+'</button><button data-act="report" data-id="'+esc(c.id)+'">Report a mismatch</button></div>'+revs+'</article>'}
 function pager(p,n){if(n<2)return '';var a=Math.max(1,p-2),b=Math.min(n,a+4);a=Math.max(1,b-4);var h='<button data-pg="'+(p-1)+'"'+(p===1?' disabled':'')+'>Previous</button>';for(var i=a;i<=b;i++)h+='<button data-pg="'+i+'"'+(i===p?' aria-current="page"':'')+'>'+i+'</button>';return h+'<button data-pg="'+(p+1)+'"'+(p===n?' disabled':'')+'>Next</button><span class="meta" style="margin:0 0 0 6px">Page '+p+' of '+n+'</span>'}
 function render(keepPage){
@@ -240,7 +242,7 @@ var err=document.getElementById('err'),ok=document.getElementById('ok'),btn=this
 var g=function(id){return document.getElementById(id).value};
 if(!selCourse||!g('f-sem')||!rating||g('f-kl')===''||!g('f-lec')||!g('f-slides')||!g('f-exam')||!g('f-team')){err.textContent='Steps 1 and 2 are required: pick a course from the list, a semester, a star rating, a language for each of the four parts (or "not applicable"), and a Korean level.';return}
 err.textContent='';btn.disabled=true;btn.textContent='Sending…';
-var body={course_id:selCourse,semester:g('f-sem'),rating:rating,lectures:g('f-lec'),slides:g('f-slides'),exams:g('f-exam'),teamwork:g('f-team'),english_ok:g('f-ok'),korean_level:+g('f-kl'),review_text:g('f-tip').trim()||null,workload:g('f-wl')||null,grading_style:g('f-gr')||null,status:'pending'};
+var body={course_id:selCourse,semester:g('f-sem'),rating:rating,lectures:g('f-lec'),slides:g('f-slides'),exams:g('f-exam'),teamwork:g('f-team'),english_ok:(g('f-team')==='English'?'Yes':(g('f-team')==='Korean'?'No':'Not sure')),korean_level:+g('f-kl'),review_text:g('f-tip').trim()||null,workload:g('f-wl')||null,grading_style:g('f-gr')||null,status:'pending'};
 api('reviews','POST',body,'return=minimal').then(function(r){
 if(!r.ok)throw new Error('Error code '+r.status);
 myN++;try{localStorage.setItem('coursed_n',myN)}catch(e){}badge();
